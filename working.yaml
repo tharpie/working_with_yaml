@@ -1,0 +1,6 @@
+# working.yaml
+reference: !reference path/to/external.yaml
+
+items:
+  - *item1
+  - *item2
