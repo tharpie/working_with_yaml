@@ -1,0 +1,13 @@
+---
+
+.host_interface:
+  switchport: true
+  host: true
+  logging: true
+
+.trunk_interface:
+  switchport_trunk: true
+  vlans: 1,2,3,4
+  logging: true
+
+

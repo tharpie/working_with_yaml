@@ -1,0 +1,12 @@
+# main.yaml
+
+hostname: test.sw1
+
+interfaces:
+  - name: eth1
+    extends: .host_interface
+  - name: eth2
+    extends: .host_interface
+  - name: eth3
+    extends: .trunk_interface
+
