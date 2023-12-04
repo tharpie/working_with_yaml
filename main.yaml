@@ -9,4 +9,10 @@ interfaces:
     extends: .host_interface
   - name: eth3
     extends: .trunk_interface
+    nested:
+      deep: true
+      too: deep
+      again:
+        last: layer
+        extends: .trunk_interface
 

@@ -7,24 +7,34 @@ def merge_dicts(base, extend):
     merged.update(base)
     for key, value in extend.items():
         merged[key] = value
-
     return(merged)
+
 
 def process_extends(data, extends_map):
    processed = dict()
    for k,v in data.items():
        e = dict()
+       p = dict()
        if k == 'extends':
            e.update(extends_map[data['extends']])
 
-       p = process_extends(v, extends_map)
+       if isinstance(v, dict):
+          p[k] = process_extends(v, extends_map)
+          if 'extends' in p[k]:
+              del(p[k]['extends'])
+       else:
+          p[k] = v
+
+       if 'extends' in p:
+           del(p['extends'])
+
        m = merge_dicts(p, e)
-       processed.update(p)
+       processed.update(m)
 
    return(processed)
 
 
-def iterate_over_map(data, extends_map):
+def search_dict(data, extends_map):
     p = dict()
     for k,v in data.items():
         if isinstance(v, str):
@@ -36,7 +46,7 @@ def iterate_over_map(data, extends_map):
                    _v = process_extends(item, extends_map)
                    l.append(_v)
                 else:
-                    l.append(item)
+                   l.append(item)
             p[k] = l
         elif isinstance(v, dict):
             p[k] = process_extends(v, extends_map)
@@ -50,6 +60,6 @@ with open('extends.yaml', 'r') as f:
 with open('main.yaml', 'r') as f:
     data = ruamel.yaml.load(f, Loader=ruamel.yaml.Loader)
 
-merged = iterate_over_map(data, extends_map)
+merged = search_dict(data, extends_map)
 
 print(json.dumps(merged, indent=2))
